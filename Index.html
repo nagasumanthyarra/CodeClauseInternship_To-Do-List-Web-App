@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Styled To-do List</title>
+    <style>
+        body {
+            background-color: black;
+            color: white;
+            text-align: center;
+            font-family: Arial, sans-serif;
+        }
+        h1 {
+            color: red;
+        }
+        input[type="text"] {
+            padding: 10px;
+            width: 350px;
+            border-color: rgb(61, 20, 166);
+            border-radius: 20px;
+            margin-bottom: 20px;
+        }
+        input[type="submit"] {
+            padding: 10px 20px 10px 20px;
+            background-color: green;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+        .task-list {
+            margin-top: 20px;
+        }
+        .task-item {
+            background-color: #f1f1f1;
+            color: black;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px;
+            margin: 10px auto;
+            width: 60%;
+            border-radius: 5px;
+            align-items: center;
+        }
+        .task-item .task-name {
+            font-size: 18px;
+            font-weight: bold;
+        }
+        .task-item button {
+            padding: 5px 10px;
+            background-color: red;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .header {
+            background-color: grey;
+            padding: 10px;
+            border-radius: 5px;
+            margin: 20px auto;
+            width: 60%;
+        }
+    </style>
+</head>
+<body>
+    <h1>Enter The Tasks To Complete</h1>
+    <form id="taskForm">
+        <input type="text" id="taskInput" placeholder="Enter task here..." required />
+        <br/>
+        <input type="submit" value="Add Work"/>
+    </form>
+    <div class="header">
+        <h2>Things to be completed by this week</h2>
+    </div>
+    <div class="task-list" id="taskList"></div>
+
+    <script>
+        let tasks = [];
+
+        const taskForm = document.getElementById('taskForm');
+        const taskInput = document.getElementById('taskInput');
+        const taskList = document.getElementById('taskList');
+
+        taskForm.addEventListener('submit', function(event) {
+            event.preventDefault(); 
+            const task = taskInput.value.trim();
+
+            if (task) {
+                tasks.push(task);
+                taskInput.value = ''; 
+                updateTaskList();
+            }
+        });
+
+        function updateTaskList() {
+            taskList.innerHTML = ''; 
+            tasks.forEach((task, index) => {
+                const taskItem = document.createElement('div');
+                taskItem.classList.add('task-item');
+
+                const taskName = document.createElement('span');
+                taskName.classList.add('task-name');
+                taskName.textContent = task;
+
+                const completeButton = document.createElement('button');
+                completeButton.textContent = 'Task Complete';
+                completeButton.addEventListener('click', function() {
+                    removeTask(index); 
+                });
+
+                taskItem.appendChild(taskName);
+                taskItem.appendChild(completeButton);
+                taskList.appendChild(taskItem);
+            });
+        }
+
+        function removeTask(index) {
+            tasks.splice(index, 1); 
+            updateTaskList(); 
+        }
+    </script>
+</body>
+</html>
